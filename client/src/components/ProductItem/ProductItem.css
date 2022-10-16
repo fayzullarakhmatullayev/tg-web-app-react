@@ -13,11 +13,16 @@
   margin: 0 auto;
   background: var(--tg-theme-button-color);
 }
-
+.title,
+.description,
+.price {
+  padding: 5px 0;
+}
 .description {
   font-size: 0.8em;
 }
 
 .add-btn {
   width: 100%;
+  margin-top: auto;
 }

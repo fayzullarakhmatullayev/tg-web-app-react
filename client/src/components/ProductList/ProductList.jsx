@@ -36,7 +36,7 @@ const ProductList = () => {
       totalPrice: getTotalPrice(addedItems),
       queryId,
     };
-    fetch("http://localhost:8000/web-data", {
+    fetch("https://tg-react-app.herokuapp.com/web-data", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

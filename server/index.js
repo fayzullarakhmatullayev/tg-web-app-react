@@ -1,10 +1,17 @@
 const TelegramBot = require("node-telegram-bot-api");
+const express = require("express");
+const cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
 const token = process.env.TELEGRAM_TOKEN;
 const webAppUrl = process.env.WEB_APP_URL;
+const PORT = process.env.PORT;
 
 const bot = new TelegramBot(token, { polling: true });
+
+const app = express();
+app.use(express.json());
+app.use(cors());
 
 bot.on("message", async (msg) => {
   const chatId = msg.chat.id;
@@ -47,3 +54,31 @@ bot.on("message", async (msg) => {
     }
   }
 });
+
+app.post("/web-data", async (req, res) => {
+  const { queryId, products, totalPrice } = req.body;
+  try {
+    await bot.answerWebAppQuery(queryId, {
+      type: "article",
+      id: queryId,
+      title: "Успешно покупка",
+      input_message_content: {
+        message_text:
+          "Поздравляю с покупккой, вы приобрели товар на сумму " + totalPrice,
+      },
+    });
+    return res.status(200).json({});
+  } catch (error) {
+    await bot.answerWebAppQuery(queryId, {
+      type: "article",
+      id: queryId,
+      title: "Не удалось приобрести товар",
+      input_message_content: {
+        message_text: "Не удалось приобрести товар",
+      },
+    });
+    return res.status(500).json({});
+  }
+});
+
+app.listen(PORT, () => console.log(`Server listening on PORT ${PORT}`));

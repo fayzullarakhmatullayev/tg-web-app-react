@@ -1,5 +1,7 @@
 const TelegramBot = require("node-telegram-bot-api");
-const token = "5791242571:AAHjXTB14IepSDA1okeKFxTKtQTo1dgU0Kg";
+const dotenv = require("dotenv");
+dotenv.config();
+const token = process.env.TELEGRAM_TOKEN;
 const webAppUrl = "https://ya.ru";
 
 const bot = new TelegramBot(token, { polling: true });
